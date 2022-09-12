@@ -53,7 +53,9 @@ let count = 0;
 function counter2() {
   return count++;
 }
-
+// 1. counter 1 will return a the a number incrementing off of itself from 1 - however many console.logs there are, counter 2 will give back one number that will be counted into from multiple locations
+// 2. 1 because it pulls from different levels of scope, return count++ uses closure in referencing the original function scope of countermaker where count is defined. 
+// 3. counter 1 would be useful if you wanted the number to increment based off how many times it was printed using console.log while counter 2 would be useful in a game where a team could click a button to pool all of their clicks into a score. 
 
 /* ⚾️⚾️⚾️ Task 2: inning() ⚾️⚾️⚾️
 Use the inning function below to do the following:
@@ -64,9 +66,9 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
-}
+function inning() {
+    return Math.floor(Math.random() * Math.floor(3));
+    }
 
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
@@ -83,8 +85,18 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*Code Here*/){
-  /*Code Here*/
+function finalScore(inningCB, innings){
+  let homeScore = 0;
+  let awayScore = 0;
+  for(let i = 0; i < innings; i++){
+    homeScore = homeScore + inningCB();
+    awayScore = awayScore + inningCB();
+  }
+  return {
+    Home: homeScore,
+    Away: awayScore
+  }
+
 }
 
 
@@ -101,11 +113,14 @@ For example: invoking getInningScore(inning) might return this object:
   */
 
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(inningCB) {
+return{
+  Home: inningCB(),
+  Away: inningCB(),
 
 }
-
+}
+// console.log(getInningScore(inning))
 
 /* STRETCH: ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
 Use the scoreboard function below to do the following:
@@ -147,10 +162,26 @@ Use the scoreboard function below to do the following:
   "This game will require extra innings: Away 10 - Home 10"
 ] */
 // NOTE: There is no test associated with this code; if your output matches the given example, consider it complete!
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(inningScoreCB, inningCB, numInnings) {
+  const scoreByInning = [];
+  let homeScore = 0;
+  let awayScore = 0;
+  
+  for(let i = 0; i < numInnings; i++){
+    const currentInning = inningScoreCB(inningCB);
+    homeScore = homeScore + currentInning.Home
+    awayScore = awayScore + currentInning.Away
+    scoreByInning.push(`Inning ${i + 1}: Away ${currentInning.Away} - Home: ${currentInning.Home}`)
+  }
+  if(homeScore === awayScore){
+    scoreByInning.push(`This game will require extra innings: Away ${currentInning.Away} - Home: ${currentInning.Home}`)
+}else{
+  scoreByInning.push(`Final score: Away: ${awayScore} - Home: ${homeScore}`);
+  }
+    return scoreByInning;
 }
 
+console.log('task 4:', scoreboard(getInningScore, inning, 9));
 
 
 
